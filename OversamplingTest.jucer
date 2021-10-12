@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="gSMQ7w" name="OversamplingTest" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+  <MAINGROUP id="GOCrrD" name="OversamplingTest">
+    <GROUP id="{5624BE2B-AB64-921B-E67C-15BA97CE5046}" name="Source">
+      <GROUP id="{AFDDF055-C9F4-530E-34B5-A909CCA0D95E}" name="oversampling">
+        <FILE id="VIFw7m" name="LatencyHandler.h" compile="0" resource="0"
+              file="Source/oversampling/LatencyHandler.h"/>
+        <FILE id="aEka7O" name="Filter.h" compile="0" resource="0" file="Source/oversampling/Filter.h"/>
+        <FILE id="rNUWOL" name="ConvolutionFilter.h" compile="0" resource="0"
+              file="Source/oversampling/ConvolutionFilter.h"/>
+        <FILE id="PLrgV6" name="Oversampling.h" compile="0" resource="0" file="Source/oversampling/Oversampling.h"/>
+      </GROUP>
+      <GROUP id="{203BD943-AA1A-77CD-3348-FA36FEE7FAC9}" name="releasePool">
+        <FILE id="qUyE94" name="ReleasePool.cpp" compile="1" resource="0" file="Source/releasePool/ReleasePool.cpp"/>
+        <FILE id="joFsbs" name="ReleasePool.h" compile="0" resource="0" file="Source/releasePool/ReleasePool.h"/>
+      </GROUP>
+      <FILE id="Sl1oHD" name="NonLinearDSP.h" compile="0" resource="0" file="Source/NonLinearDSP.h"/>
+      <FILE id="a5RNHm" name="Param.h" compile="0" resource="0" file="Source/Param.h"/>
+      <FILE id="ypaQPG" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="t0vppE" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="wg7rzH" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="hTwQJK" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2019 targetFolder="Builds/VisualStudio2019">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="OversamplingTest" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="OversamplingTest"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2019>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
