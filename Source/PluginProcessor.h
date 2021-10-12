@@ -2,7 +2,6 @@
 
 #include "Param.h"
 #include "oversampling/Oversampling.h"
-#include "releasePool/ReleasePool.h"
 #include "NonLinearDSP.h"
 #include <JuceHeader.h>
 

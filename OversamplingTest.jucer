@@ -12,10 +12,6 @@
               file="Source/oversampling/ConvolutionFilter.h"/>
         <FILE id="PLrgV6" name="Oversampling.h" compile="0" resource="0" file="Source/oversampling/Oversampling.h"/>
       </GROUP>
-      <GROUP id="{203BD943-AA1A-77CD-3348-FA36FEE7FAC9}" name="releasePool">
-        <FILE id="qUyE94" name="ReleasePool.cpp" compile="1" resource="0" file="Source/releasePool/ReleasePool.cpp"/>
-        <FILE id="joFsbs" name="ReleasePool.h" compile="0" resource="0" file="Source/releasePool/ReleasePool.h"/>
-      </GROUP>
       <FILE id="Sl1oHD" name="NonLinearDSP.h" compile="0" resource="0" file="Source/NonLinearDSP.h"/>
       <FILE id="a5RNHm" name="Param.h" compile="0" resource="0" file="Source/Param.h"/>
       <FILE id="ypaQPG" name="PluginProcessor.cpp" compile="1" resource="0"
