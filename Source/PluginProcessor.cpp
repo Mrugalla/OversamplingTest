@@ -25,6 +25,7 @@ OversamplingTestAudioProcessor::OversamplingTestAudioProcessor()
     // DSP
     vibrato(),
     wavefolder(),
+    saturator(),
     // PARAMS
     apvts(*this, nullptr, "params", param::createParameters()),
     gainP(apvts.getRawParameterValue(param::getID(param::ID::Gain))),
@@ -163,8 +164,7 @@ void OversamplingTestAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     // upsampling
     auto bufferUp = oversampling.upsample(buffer);
     if (bufferUp == nullptr) return; // reallocated
-    auto samples = bufferUp->getWritePointer(0);
-
+    
     // non-linear processing
     const auto vibFreq = vibFreqP->load();
     const auto vibDepth = vibDepthP->load();

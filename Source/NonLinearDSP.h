@@ -129,17 +129,18 @@ namespace dsp {
 		}
 		void prepareToPlay(double sampleRate, int blockSize) {
 			size = static_cast<int>(sampleRate * 7. / 1000.);
-			latencySamples = size / 2;
 			lfo.prepareToPlay(sampleRate);
 			lfo.setFrequency(1.f);
 			ringBuffer.resize(size + 1, 0.f);
 			writeHead = 0;
+			latencySamples = size / 2;
+			latencyUpdated = true;
 		}
 		void setFrequency(float f) noexcept { lfo.setFrequency(f); }
 		void process(float* samples, int numSamples) {
 			for (auto s = 0; s < numSamples; ++s) {
 				writeHead = (writeHead + 1) % size;
-				const auto lfoNormal = (depth * lfo.process() * .5f + .5f) * .9f;
+				const auto lfoNormal = .9f * depth * lfo.process() * .5f + .5f;
 				const auto lfoMapped = lfoNormal * static_cast<float>(size);
 				auto readHead = static_cast<float>(writeHead) - lfoMapped;
 				if (readHead < 0.f)
