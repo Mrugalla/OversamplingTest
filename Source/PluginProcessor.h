@@ -14,10 +14,8 @@ struct IDs {
     juce::Identifier fDBw = "fDBw";
 };
 
-//==============================================================================
-/**
-*/
-class OversamplingTestAudioProcessor  : public juce::AudioProcessor
+class OversamplingTestAudioProcessor :
+    public juce::AudioProcessor
 {
 public:
     //==============================================================================
@@ -56,8 +54,6 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
-    latency::Processor latencyProcessor;
 
     oversampling::Processor oversampling;
     

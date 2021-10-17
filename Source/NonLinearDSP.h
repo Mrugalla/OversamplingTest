@@ -1,6 +1,5 @@
 #pragma once
 #include "oversampling/Oversampling.h"
-#include "oversampling/LatencyHandler.h"
 
 namespace dsp {
 	static constexpr float tau = 6.28318530718f;
@@ -37,8 +36,7 @@ namespace dsp {
 		Phasor phasor;
 	};
 
-	struct RingMod :
-		public oversampling::Processor::Listener
+	struct RingMod
 	{
 		RingMod(int numChannels) :
 			lfo()
@@ -55,10 +53,6 @@ namespace dsp {
 		}
 	protected:
 		std::vector<SineOsc> lfo;
-
-		void updateOversampling(double Fs, int blockSize, int, int) override {
-			prepareToPlay(Fs);
-		}
 	};
 
 	struct Wavefolder {
@@ -115,9 +109,7 @@ namespace dsp {
 		float drive;
 	};
 
-	struct Vibrato :
-		public oversampling::Processor::Listener,
-		public latency::Inducer
+	struct Vibrato
 	{
 		Vibrato() :
 			lfo(),
@@ -133,8 +125,6 @@ namespace dsp {
 			lfo.setFrequency(1.f);
 			ringBuffer.resize(size + 1, 0.f);
 			writeHead = 0;
-			latencySamples = size / 2;
-			latencyUpdated = true;
 		}
 		void setFrequency(float f) noexcept { lfo.setFrequency(f); }
 		void process(float* samples, int numSamples) {
@@ -150,6 +140,7 @@ namespace dsp {
 				samples[s] = lerp(readHead);
 			}
 		}
+		int getLatency() const noexcept { return ringBuffer.size() / 2; }
 
 		SineOsc lfo;
 		std::vector<float> ringBuffer;
@@ -161,10 +152,6 @@ namespace dsp {
 			const auto x = rHead - xFloor;
 			const auto xCeil = (xFloor + 1) % size;
 			return ringBuffer[xFloor] + x * (ringBuffer[xCeil] - ringBuffer[xFloor]);
-		}
-
-		void updateOversampling(double Fs, int blockSize, int, int) override {
-			prepareToPlay(Fs, blockSize);
 		}
 	};
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="gSMQ7w" name="OversamplingTest" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginManufacturerCode="ovsr"
+              pluginCode="osts">
   <MAINGROUP id="GOCrrD" name="OversamplingTest">
     <GROUP id="{5624BE2B-AB64-921B-E67C-15BA97CE5046}" name="Source">
       <GROUP id="{AFDDF055-C9F4-530E-34B5-A909CCA0D95E}" name="oversampling">
-        <FILE id="VIFw7m" name="LatencyHandler.h" compile="0" resource="0"
-              file="Source/oversampling/LatencyHandler.h"/>
         <FILE id="aEka7O" name="Filter.h" compile="0" resource="0" file="Source/oversampling/Filter.h"/>
         <FILE id="rNUWOL" name="ConvolutionFilter.h" compile="0" resource="0"
               file="Source/oversampling/ConvolutionFilter.h"/>
@@ -28,7 +27,7 @@
     <VS2019 targetFolder="Builds/VisualStudio2019">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="OversamplingTest" enablePluginBinaryCopyStep="1"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="OversamplingTest"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="OversamplingTest" enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="C:/Users/Eine Alte Oma/Documents/JUCE/JUCE/modules"/>

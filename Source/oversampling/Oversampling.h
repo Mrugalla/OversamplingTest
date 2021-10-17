@@ -1,7 +1,6 @@
 #pragma once
 #include <array>
 
-#include "LatencyHandler.h"
 #include "juce_audio_basics/juce_audio_basics.h"
 
 #include "Filter.h"
@@ -11,14 +10,10 @@ namespace oversampling {
 	constexpr size_t MaxNumStages = 2;
 	static constexpr size_t MaxOrder = 1 << MaxNumStages;
 
-	struct Processor :
-		public latency::Inducer
+	struct Processor
 	{
-		struct Listener {
-			virtual void updateOversampling(double newSampleRate, int newBlockSize, int numChannels, int latency) = 0;
-		};
-
-		Processor(const int _numChannels, latency::Processor& latencyP) :
+		Processor(const int _numChannels, juce::AudioProcessor* p) :
+			audioProcessor(p),
 			Fs(0.),
 			numChannels(_numChannels),
 			blockSize(0),
@@ -35,17 +30,13 @@ namespace oversampling {
 
 			enabled(true), wannaUpdate(false),
 			enabledTmp(true),
-			listeners(),
-
-			latencyProcessor(latencyP),
 
 			numSamples1x(0), numSamples2x(0), numSamples4x(0)
 		{
-			latencyP.addInducer(this);
-			updateLatency();
 		}
 
 		Processor(Processor& p) :
+			audioProcessor(p.audioProcessor),
 			Fs(p.Fs),
 			numChannels(p.numChannels), blockSize(p.blockSize),
 			buffer(p.buffer),
@@ -54,12 +45,9 @@ namespace oversampling {
 			FsUp(p.FsUp), blockSizeUp(p.blockSizeUp),
 			enabled(p.enabled.load()),
 			wannaUpdate(p.wannaUpdate.load()),
-			enabledTmp(p.enabledTmp), listeners(p.listeners),
-			latencyProcessor(p.latencyProcessor),
+			enabledTmp(p.enabledTmp),
 			numSamples1x(0), numSamples2x(0), numSamples4x(0)
 		{
-			latencyProcessor.removeInducer(&p);
-			latencyProcessor.addInducer(this);
 		}
 		// prepare & params
 		void prepareToPlay(const double sampleRate, const int _blockSize) {
@@ -74,15 +62,12 @@ namespace oversampling {
 				blockSizeUp = blockSize;
 			}
 			buffer.setSize(numChannels, blockSize * MaxOrder, false, false, false);
-			updateLatency();
 		}
 		/* processing methods */
 		juce::AudioBuffer<float>* upsample(juce::AudioBuffer<float>& input) {
 			if (wannaUpdate.load()) {
 				enabled.store(enabledTmp);
-				prepareToPlay(Fs, blockSize);
-				for (auto listener: listeners)
-					listener->updateOversampling(FsUp, blockSizeUp, numChannels, this->latencySamples);
+				audioProcessor->prepareToPlay(Fs, blockSize);
 				wannaUpdate.store(false);
 				return nullptr;
 			}
@@ -129,7 +114,7 @@ namespace oversampling {
 						samplesOut[ch][s] = samplesUp[ch][s * 2];
 			}
 		}
-		//
+		////////////////////////////////////////
 		const double getSampleRateUpsampled() const noexcept { return FsUp; }
 		const int getBlockSizeUp() const noexcept { return blockSizeUp; }
 		/* returns true if changing the state was successful */
@@ -140,10 +125,13 @@ namespace oversampling {
 			return true;
 		}
 		bool isEnabled() const noexcept { return enabled.load(); }
-		void addListener(Listener* listener) {
-			listeners.push_back(listener);
+		const int getLatency() const noexcept {
+			if (enabled.load())
+				return filterUp2.getLatency() + filterDown2.getLatency() + filterUp4.getLatency() + filterDown4.getLatency();
+			return 0;
 		}
 	protected:
+		juce::AudioProcessor* audioProcessor;
 		double Fs;
 		int numChannels, blockSize;
 
@@ -158,19 +146,8 @@ namespace oversampling {
 		std::atomic<bool> enabled;
 		std::atomic<bool> wannaUpdate;
 		bool enabledTmp;
-		std::vector<Listener*> listeners;
-
-		latency::Processor& latencyProcessor;
 
 		int numSamples1x, numSamples2x, numSamples4x;
-	private:
-		void updateLatency() {
-			if (enabled.load())
-				this->latencySamples = filterUp2.getLatency() + filterDown2.getLatency() + filterUp4.getLatency() + filterDown4.getLatency();
-			else
-				this->latencySamples = 0;
-			this->latencyUpdated = true;
-		}
 	};
 }
 

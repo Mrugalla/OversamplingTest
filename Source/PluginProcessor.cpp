@@ -20,8 +20,7 @@ OversamplingTestAudioProcessor::OversamplingTestAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-    latencyProcessor(*this),
-    oversampling(getTotalNumInputChannels(), latencyProcessor),
+    oversampling(getTotalNumInputChannels(), this),
     // DSP
     vibrato(),
     wavefolder(),
@@ -36,10 +35,6 @@ OversamplingTestAudioProcessor::OversamplingTestAudioProcessor()
 #endif
 {
     vibrato.resize(getTotalNumInputChannels());
-    for (auto ch = 0; ch < vibrato.size(); ++ch) {
-        oversampling.addListener(&vibrato[ch]);
-        latencyProcessor.addInducer(&vibrato[ch]);
-    }
 }
     
 
@@ -112,13 +107,16 @@ void OversamplingTestAudioProcessor::changeProgramName (int index, const juce::S
 //==============================================================================
 void OversamplingTestAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    auto state = apvts.state;
     oversampling.prepareToPlay(sampleRate, samplesPerBlock);
     sampleRate = oversampling.getSampleRateUpsampled();
     samplesPerBlock = oversampling.getBlockSizeUp();
+    auto latency = oversampling.getLatency();
 
     for(auto& v: vibrato)
         v.prepareToPlay(sampleRate, samplesPerBlock);
+    latency += vibrato[0].getLatency();
+
+    setLatencySamples(latency);
 }
 
 void OversamplingTestAudioProcessor::releaseResources()
