@@ -5,7 +5,8 @@
 #include "NonLinearDSP.h"
 #include <JuceHeader.h>
 
-struct IDs {
+struct IDs
+{
     juce::Identifier fUFs = "fUFs";
     juce::Identifier fUC = "fUC";
     juce::Identifier fUBw = "fUBw";

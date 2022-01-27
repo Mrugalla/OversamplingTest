@@ -127,8 +127,10 @@ namespace dsp {
 			writeHead = 0;
 		}
 		void setFrequency(float f) noexcept { lfo.setFrequency(f); }
-		void process(float* samples, int numSamples) {
-			for (auto s = 0; s < numSamples; ++s) {
+		void process(float* samples, int numSamples)
+		{
+			for (auto s = 0; s < numSamples; ++s)
+			{
 				writeHead = (writeHead + 1) % size;
 				const auto lfoNormal = .9f * depth * lfo.process() * .5f + .5f;
 				const auto lfoMapped = lfoNormal * static_cast<float>(size);
@@ -140,14 +142,15 @@ namespace dsp {
 				samples[s] = lerp(readHead);
 			}
 		}
-		int getLatency() const noexcept { return ringBuffer.size() / 2; }
+		int getLatency() const noexcept { return static_cast<int>(ringBuffer.size() / 2); }
 
 		SineOsc lfo;
 		std::vector<float> ringBuffer;
 		float depth;
 		int writeHead, size;
 
-		float lerp(float rHead) noexcept {
+		float lerp(float rHead) noexcept
+		{
 			const auto xFloor = int(rHead);
 			const auto x = rHead - xFloor;
 			const auto xCeil = (xFloor + 1) % size;

@@ -20,7 +20,7 @@ OversamplingTestAudioProcessor::OversamplingTestAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-    oversampling(getTotalNumInputChannels(), this),
+    oversampling(this),
     // DSP
     vibrato(),
     wavefolder(),
@@ -154,22 +154,32 @@ bool OversamplingTestAudioProcessor::isBusesLayoutSupported (const BusesLayout& 
 void OversamplingTestAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    auto numSamples = buffer.getNumSamples();
+    {
+        const auto totalNumInputChannels = getTotalNumInputChannels();
+        const auto totalNumOutputChannels = getTotalNumOutputChannels();
+        for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+            buffer.clear(i, 0, numSamples);
+    }
+    
+    const auto numChannelsIn = getChannelCountOfBus(true, 0);
+    const auto numChannelsOut = buffer.getNumChannels();
 
     // upsampling
-    auto bufferUp = oversampling.upsample(buffer);
-    if (bufferUp == nullptr) return; // reallocated
-    
+    auto bufferUp = oversampling.upsample(buffer, numChannelsIn, numChannelsOut);
+    if (bufferUp == nullptr)
+        bufferUp = &buffer;
+    numSamples = bufferUp->getNumSamples();
+    auto samples = bufferUp->getArrayOfWritePointers();
+
     // non-linear processing
     const auto vibFreq = vibFreqP->load();
     const auto vibDepth = vibDepthP->load();
-    for (auto ch = 0; ch < vibrato.size(); ++ch) {
+    for (auto ch = 0; ch < vibrato.size(); ++ch)
+    {
         vibrato[ch].depth = vibDepth;
         vibrato[ch].setFrequency(vibFreq);
-        vibrato[ch].process(bufferUp->getWritePointer(ch), bufferUp->getNumSamples());
+        vibrato[ch].process(samples[ch], numSamples);
     }
     wavefolder.setDrive(juce::Decibels::decibelsToGain(waveFolderDriveP->load()));
     wavefolder.processBlock(*bufferUp);
@@ -177,7 +187,8 @@ void OversamplingTestAudioProcessor::processBlock (juce::AudioBuffer<float>& buf
     saturator.processBlock(*bufferUp);
     
     // downsampling
-    oversampling.downsample(buffer);
+    if(bufferUp != &buffer)
+        oversampling.downsample(&buffer, numChannelsOut);
 
     const auto gainV = juce::Decibels::decibelsToGain(gainP->load());
     buffer.applyGain(gainV);

@@ -2,11 +2,11 @@
 
 <JUCERPROJECT id="gSMQ7w" name="OversamplingTest" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginManufacturerCode="ovsr"
-              pluginCode="osts">
+              pluginCode="osts" cppLanguageStandard="latest">
   <MAINGROUP id="GOCrrD" name="OversamplingTest">
     <GROUP id="{5624BE2B-AB64-921B-E67C-15BA97CE5046}" name="Source">
       <GROUP id="{AFDDF055-C9F4-530E-34B5-A909CCA0D95E}" name="oversampling">
-        <FILE id="aEka7O" name="Filter.h" compile="0" resource="0" file="Source/oversampling/Filter.h"/>
+        <FILE id="yvfv9B" name="IIRFilter.h" compile="0" resource="0" file="Source/oversampling/IIRFilter.h"/>
         <FILE id="rNUWOL" name="ConvolutionFilter.h" compile="0" resource="0"
               file="Source/oversampling/ConvolutionFilter.h"/>
         <FILE id="PLrgV6" name="Oversampling.h" compile="0" resource="0" file="Source/oversampling/Oversampling.h"/>
