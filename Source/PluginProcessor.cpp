@@ -114,7 +114,7 @@ void OversamplingTestAudioProcessor::prepareToPlay (double sampleRate, int sampl
 
     for(auto& v: vibrato)
         v.prepareToPlay(sampleRate, samplesPerBlock);
-    latency += vibrato[0].getLatency();
+    latency += vibrato[0].getLatency() / oversampling.getUpsamplingFactor();
 
     setLatencySamples(latency);
 }
